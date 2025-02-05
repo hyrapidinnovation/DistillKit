@@ -11,13 +11,13 @@ import yaml
 config = {
     "project_name": "distil-multilayer",
     "dataset": {
-        "name": "mlabonne/FineTome-100k",
+        "name": "open-thoughts/OpenThoughts-114k",
         "split": "train",
         "num_samples": 1000, # You can pass a number here to limit the number of samples to use.
         "seed": 42
     },
     "models": {
-        "teacher": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "teacher": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
         "student": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
     },
     "tokenizer": {
@@ -78,9 +78,9 @@ def prepare_dataset(example):
     message = [{"role": "system", "content": system}]
     
     for conversation in conversations:
-        if conversation.get('from') == 'human':
+        if conversation.get('from') == 'user':
             message.append({"role": "user", "content": conversation.get('value', '')})
-        elif conversation.get('from') == 'gpt':
+        elif conversation.get('from') == 'assistant':
             message.append({"role": "assistant", "content": conversation.get('value', '')})
     
     student_text = student_tokenizer.apply_chat_template(message, tokenize=False, add_generation_prompt=True)
